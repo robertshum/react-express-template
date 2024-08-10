@@ -1,0 +1,25 @@
+{
+  "lastUserId": 1,
+  "lastPizzaId": 1,
+  "users": [
+    {
+      "_id": 1,
+      "name": "Rob",
+      "token": "F5yHCjMWqeXSMZcznVfaDdpi4hX3.U.Ma6UUiEFnInj4t.crBnfYp5iX6usyCA.H",
+      "createdAt": 1719971575153,
+      "lastLoginAt": 1720141456753,
+      "role": 100,
+      "isActive": true,
+      "email": "user@example.com",
+      "password": "$2b$10$0hWi2lxRm0pHfJzT/CnoouF3WphG8wFCjD9HDwsmwHZ7ss66/Fm5q"
+    }
+  ],
+  "pizzas": [
+    {
+      "name": "Pepperoni",
+      "quantity": 5,
+      "available": true,
+      "_id": 1
+    }
+  ]
+}
