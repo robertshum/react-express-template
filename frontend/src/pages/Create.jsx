@@ -1,4 +1,4 @@
-const Create = function() {
+const Create = () => {
 
   return (
     <div>

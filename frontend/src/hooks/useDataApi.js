@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient  } from '@tanstack/react-query';
 
 const API_LOC = import.meta.env.VITE_API_LOCATION;
 let API_PORT = '';
@@ -32,15 +32,15 @@ const getPizzas = async () => {
   return jsonResults;
 };
 
-const createOrUpdatePizza = async (pizzaData) => {
+const createOrUpdatePizza = async ({id, data}) => {
   const entity = 'pizza-model';
-  const response = await fetch(`${API_LOC}:${API_PORT}${API_SUFFIX}${entity}`, {
-    method: pizzaData.id ? 'PUT' : 'POST',
+  const response = await fetch(`${API_LOC}:${API_PORT}${API_SUFFIX}${entity}/${id}`, {
+    method: id ? 'PUT' : 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${TOKEN}`,
     },
-    body: JSON.stringify(pizzaData),
+    body: JSON.stringify(data),
   });
 
   if (!response.ok) {
@@ -66,16 +66,27 @@ export const usePizzasAPI = () => {
   };
 };
 
-export const usePizzaMutation = () => {
+export const usePizzaMutationAPI = () => {
+  const queryClient = useQueryClient();
   const {
-    mutate: savePizza,
+    mutate: saveData,
     isLoading: saveLoading,
     isError: saveError,
     isSuccess: saveSuccess,
-  } = useMutation(createOrUpdatePizza);
+  } = useMutation({
+    mutationFn: createOrUpdatePizza,
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['getPizzas'] });
+    },
+    onError: (error) => {
+      // Error actions
+      console.log("error occured mutating w/ react query.", error);
+    },
+  });
 
   return {
-    savePizza,
+    saveData,
     saveLoading,
     saveError,
     saveSuccess,

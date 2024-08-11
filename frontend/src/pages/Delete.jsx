@@ -1,4 +1,4 @@
-const Delete = function() {
+const Delete = () => {
 
   return (
     <div>
