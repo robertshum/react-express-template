@@ -3,7 +3,7 @@
 import PizzaModelService from '../../services/pizzamodel.js';
 import { requireUser } from '../middlewares/auth.js';
 import { requireSchema } from '../middlewares/validate.js';
-import schema from '../schemas/pizzamodel.js';
+import { pizzaModelSchema, pizzaArraySchema } from '../schemas/pizzamodel.js';
 
 const router = Router();
 
@@ -66,7 +66,7 @@ router.get('', async (req, res, next) => {
  *             schema:
  *               $ref: '#/components/schemas/PizzaModel'
  */
-router.post('', requireSchema(schema), async (req, res, next) => {
+router.post('', requireSchema(pizzaModelSchema), async (req, res, next) => {
   try {
     const obj = await PizzaModelService.create(req.validatedBody);
     res.status(201).json(obj);
@@ -152,7 +152,7 @@ router.get('/:id', async (req, res, next) => {
  *             schema:
  *               $ref: '#/components/schemas/PizzaModel'
  */
-router.put('/:id', requireSchema(schema), async (req, res, next) => {
+router.put('/:id', requireSchema(pizzaModelSchema), async (req, res, next) => {
   try {
 
     // cannot be converted to a number

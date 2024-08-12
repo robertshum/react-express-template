@@ -1,4 +1,4 @@
-export default {
+export const pizzaModelSchema = {
   type: 'object',
   properties: {
     name: { type: 'string' },
@@ -11,4 +11,10 @@ export default {
     'available',
   ],
   additionalProperties: false,
+};
+
+export const pizzaArraySchema = {
+  type: 'array',
+  items: pizzaModelSchema, // Reference the pizzaModelSchema
+  minItems: 1, // Optional: Ensure at least one item in the array
 };
