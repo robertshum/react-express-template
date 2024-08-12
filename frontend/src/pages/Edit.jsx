@@ -1,12 +1,18 @@
+import { useForm } from "react-hook-form";
 import { usePizzasAPI, usePizzaMutationAPI } from '../hooks/useDataAPI';
 
 const Edit = () => {
+
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   const {
     dataFromQuery,
     getError,
     getLoading,
   } = usePizzasAPI();
+
+  // console.log('datafromquery: ', dataFromQuery);
+  console.log('errors: ', errors);
 
   const {
     saveData,
@@ -15,13 +21,13 @@ const Edit = () => {
     saveSuccess,
   } = usePizzaMutationAPI();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
+  const onSubmit = (data) => {
+    // event.preventDefault(); //RHF deals with this automatically.
+    console.log("data: ", data);
     // TODO move this to a form, obviously.
     const pizzaData =
     {
-      name: 'Pepperoni',
+      name: data.pizzaName,
       quantity: 3,
       available: true
     };
@@ -39,16 +45,28 @@ const Edit = () => {
       <ul>
         {dataFromQuery.map(pizza => (
           <li key={pizza._id}>
-            <h2>{pizza.name}</h2>
-            <p>Quantity: {pizza.quantity}</p>
-            <p>{pizza.available ? "Available" : "Not Available"}</p>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <label>Name of Entity</label>
+              {errors.pizzaName && <p>Please provide pizza name</p>}
+              <input
+                {...register('pizzaName', { required: true })}
+                type='text'
+                placeholder={pizza.name} />
+              <label>Quantity</label>
+              {errors.quantity && <p>Please provide quantity</p>}
+              <input
+                {...register('quantity', { required: true })}
+                type='number'
+                placeholder={pizza.quantity} />
+              <p>{pizza.available ? "Available" : "Not Available"}</p>
+              <button
+                type="submit"
+                onClick={handleSubmit(onSubmit)}>Save
+              </button>
+            </form>
           </li>
         ))}
       </ul>
-      <form>
-        <button type="submit" onClick={handleSubmit}>Save</button>
-      </form>
-
     </div>
   );
 };
