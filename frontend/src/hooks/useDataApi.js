@@ -85,6 +85,46 @@ const deletePizza = async ({ id }) => {
   return { success: true, message: 'data deleted successfully' };
 };
 
+const loginUser = async ({ email, password }) => {
+  const api = `${API_LOC}:${API_PORT}${API_SUFFIX}auth/login`;
+  const response = await fetch(api, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Login failed');
+  }
+
+  const { user } = await response.json();
+  return user;
+};
+
+// TODO pass in TOKEN in param
+const logoutUser = async ({ user }) => {
+  const api = `${API_LOC}:${API_PORT}${API_SUFFIX}auth/logout`;
+
+  const response = await fetch(api, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${TOKEN}`,
+    },
+    body: JSON.stringify({ user }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Logout failed');
+  }
+
+  return { success: true, message: 'user logged out successfully' };
+};
+
 export const usePizzasAPI = () => {
   const {
     data: dataFromQuery,
@@ -152,5 +192,51 @@ export const useDeletePizzaAPI = () => {
     deleteLoading,
     deleteError,
     deleteSuccess,
+  };
+};
+
+export const loginUserAPI = () => {
+  const {
+    mutate: login,
+    error: loginError,
+    isSuccess: loginSuccess,
+  } = useMutation({
+    mutationFn: loginUser,
+    onSuccess: (data) => {
+      //handle successful login
+      console.log('Login successful: ', data);
+    },
+    onError: (error) => {
+      console.error('Login error: ', error.message);
+    },
+  });
+
+  return {
+    login,
+    loginError,
+    loginSuccess,
+  };
+};
+
+export const logoutUserAPI = () => {
+  const {
+    mutate: logout,
+    error: logoutError,
+    isSuccess: logoutSuccess,
+  } = useMutation({
+    mutationFn: logoutUser,
+    onSuccess: (data) => {
+      //handle successful logout
+      console.log('Logout successful: ', data);
+    },
+    onError: (error) => {
+      console.error('Logout error: ', error.message);
+    },
+  });
+
+  return {
+    logout,
+    logoutError,
+    logoutSuccess,
   };
 };
