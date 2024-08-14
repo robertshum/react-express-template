@@ -42,7 +42,7 @@ router.post(urls.auth.login, requireSchema(loginSchema), async (req, res) => {
   if (user) {
     res.json({ user });
   } else {
-    res.status(401).json({ error: 'Authentication failed' });
+    res.status(401).json({ error: 'Could not log in with email and password provided' });
   }
 });
 

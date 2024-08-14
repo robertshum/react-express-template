@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { UserProvider } from './context/UserProvider';
 
 //css
 import './App.css';
@@ -17,17 +18,18 @@ function App() {
 
   return (
     <>
-      <Navigation />
-      <Routes>
-        <Route path="/Home"
-          element={<Navigate to="/" replace />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/edit" element={<Edit />} />
-        <Route path="/create" element={<Create />} />
-        <Route path="/delete" element={<Delete />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-
+      <UserProvider>
+        <Navigation />
+        <Routes>
+          <Route path="/Home"
+            element={<Navigate to="/" replace />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/edit" element={<Edit />} />
+          <Route path="/create" element={<Create />} />
+          <Route path="/delete" element={<Delete />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </UserProvider>
     </>
   );
 }

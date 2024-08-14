@@ -1,4 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { UserContext } from '../context/UserContext';
+import { useContext } from 'react';
 
 const API_LOC = import.meta.env.VITE_API_LOCATION;
 let API_PORT = '';
@@ -104,7 +106,6 @@ const loginUser = async ({ email, password }) => {
   return user;
 };
 
-// TODO pass in TOKEN in param
 const logoutUser = async ({ user }) => {
   const api = `${API_LOC}:${API_PORT}${API_SUFFIX}auth/logout`;
 
@@ -196,8 +197,9 @@ export const useDeletePizzaAPI = () => {
 };
 
 export const loginUserAPI = () => {
+  const { login } = useContext(UserContext);
   const {
-    mutate: login,
+    mutate: loginMutationFn,
     error: loginError,
     isSuccess: loginSuccess,
   } = useMutation({
@@ -205,6 +207,7 @@ export const loginUserAPI = () => {
     onSuccess: (data) => {
       //handle successful login
       console.log('Login successful: ', data);
+      login(data);
     },
     onError: (error) => {
       console.error('Login error: ', error.message);
@@ -212,7 +215,7 @@ export const loginUserAPI = () => {
   });
 
   return {
-    login,
+    loginMutationFn,
     loginError,
     loginSuccess,
   };
@@ -228,6 +231,9 @@ export const logoutUserAPI = () => {
     onSuccess: (data) => {
       //handle successful logout
       console.log('Logout successful: ', data);
+
+      //NOTE:
+      //the backend does not currently store the user logging in.  It is stored in the client/context level (for demo purposes).  If the back-end needs to logout, we would have additional logic here.  Otherwise, the context will clear the user.
     },
     onError: (error) => {
       console.error('Logout error: ', error.message);
