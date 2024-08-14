@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient  } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const API_LOC = import.meta.env.VITE_API_LOCATION;
 let API_PORT = '';
@@ -32,10 +32,22 @@ const getPizzas = async () => {
   return jsonResults;
 };
 
-const createOrUpdatePizza = async ({id, data}) => {
+const createOrUpdatePizza = async ({ id, data }) => {
+
   const entity = 'pizza-model';
-  const response = await fetch(`${API_LOC}:${API_PORT}${API_SUFFIX}${entity}/${id}`, {
-    method: id ? 'PUT' : 'POST',
+
+  // POST, unless id is present
+  let api = `${API_LOC}:${API_PORT}${API_SUFFIX}${entity}`;
+  let methodType = 'POST';
+
+  //if id is present, PUT/PATCH
+  if (id) {
+    api += `/${id}`;
+    methodType = 'PUT';
+  }
+
+  const response = await fetch(api, {
+    method: methodType,
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${TOKEN}`,

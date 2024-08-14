@@ -5,7 +5,7 @@ import {
   changePasswordSchema,
   userSchema
 } from './schemas/auth.js';
-import pizzaModelSchema from './schemas/pizzamodel.js';
+import { pizzaModelSchema } from './schemas/pizzamodel.js';
 
 export const definition = {
   openapi: "3.0.0",

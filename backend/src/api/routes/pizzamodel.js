@@ -1,4 +1,4 @@
- import { Router } from 'express';
+import { Router } from 'express';
 
 import PizzaModelService from '../../services/pizzamodel.js';
 import { requireUser } from '../middlewares/auth.js';

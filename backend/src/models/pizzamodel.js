@@ -57,14 +57,14 @@ class Pizza {
   }
 
   static async save(pizza) {
+    console.log("pizza: ", pizza);
     const data = await readFile();
     const existingPizzaIndex = data.pizzas.findIndex(
       p => p.name === pizza.name);
 
     // if it exists, just update it, but keep the old id
     if (existingPizzaIndex >= 0) {
-      const id = data.pizzas[existingPizzaIndex].pizza._id;
-      pizza._id = id;
+      pizza._id = data.pizzas[existingPizzaIndex]._id;
       data.pizzas[existingPizzaIndex] = pizza;
     } else {
 
