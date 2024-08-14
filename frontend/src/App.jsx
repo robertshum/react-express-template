@@ -11,10 +11,9 @@ import Home from './pages/Home';
 import Edit from './pages/Edit';
 import Delete from './pages/Delete';
 import Create from './pages/Create';
+import Login from './pages/Login';
 
 function App() {
-
-
 
   return (
     <>
@@ -26,6 +25,7 @@ function App() {
         <Route path="/edit" element={<Edit />} />
         <Route path="/create" element={<Create />} />
         <Route path="/delete" element={<Delete />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
 
     </>

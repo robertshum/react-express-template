@@ -8,6 +8,7 @@ const Navigation = function() {
       <Link to="/edit">Edit</Link>
       <Link to="/create">Create</Link>
       <Link to="/delete">Delete</Link>
+      <Link to="/login">Login</Link>
     </nav>
   );
 };
