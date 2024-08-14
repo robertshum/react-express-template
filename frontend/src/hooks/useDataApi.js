@@ -8,6 +8,8 @@ const ENV_PORT = import.meta.env.VITE_API_PORT;
 // TODO Testing Remove Token when finished testing
 const TOKEN = 'F5yHCjMWqeXSMZcznVfaDdpi4hX3.U.Ma6UUiEFnInj4t.crBnfYp5iX6usyCA.H';
 
+//TODO move const ENTITY here.
+
 if (ENV_PORT) {
   API_PORT = ENV_PORT;
 }
@@ -33,7 +35,6 @@ const getPizzas = async () => {
 };
 
 const createOrUpdatePizza = async ({ id, data }) => {
-
   const entity = 'pizza-model';
 
   // POST, unless id is present
@@ -60,6 +61,28 @@ const createOrUpdatePizza = async ({ id, data }) => {
   }
 
   return await response.json();
+};
+
+const deletePizza = async ({ id }) => {
+  const entity = 'pizza-model';
+  let api = `${API_LOC}:${API_PORT}${API_SUFFIX}${entity}/${id}`;
+  const response = await fetch(api, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${TOKEN}`,
+    },
+  });
+
+  if (response.status === 404) {
+    throw new Error('Cannot find data');
+  }
+
+  if (!response.ok) {
+    throw new Error('Failed to delete data');
+  }
+
+  return { success: true, message: 'data deleted successfully' };
 };
 
 export const usePizzasAPI = () => {
@@ -102,5 +125,32 @@ export const usePizzaMutationAPI = () => {
     saveLoading,
     saveError,
     saveSuccess,
+  };
+};
+
+export const useDeletePizzaAPI = () => {
+  const queryClient = useQueryClient();
+  const {
+    mutate: deleteData,
+    isLoading: deleteLoading,
+    error: deleteError,
+    isSuccess: deleteSuccess,
+  } = useMutation({
+    mutationFn: deletePizza,
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['getPizzas'] });
+    },
+    onError: (error) => {
+      // Error actions
+      console.log("error occured mutating w/ react query.", error);
+    },
+  });
+
+  return {
+    deleteData,
+    deleteLoading,
+    deleteError,
+    deleteSuccess,
   };
 };

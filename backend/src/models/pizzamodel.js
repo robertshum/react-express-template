@@ -28,6 +28,11 @@ class Pizza {
     data.pizzas = data.pizzas.filter(pizza => Object.keys(query).every(key => pizza[key] !== query[key]));
 
     const newCount = data.pizzas.length;
+    
+    // only decrement if there are any entries
+    if (data.lastPizzaId > 0) {
+      data.lastPizzaId = data.lastPizzaId - 1;
+    }
 
     await writeFile(data);
     return oldCount !== newCount;
@@ -57,7 +62,6 @@ class Pizza {
   }
 
   static async save(pizza) {
-    console.log("pizza: ", pizza);
     const data = await readFile();
     const existingPizzaIndex = data.pizzas.findIndex(
       p => p.name === pizza.name);
