@@ -11,16 +11,19 @@ const Navigation = function() {
     navigate('/');
   };
 
+  // Home available to everyone
+  // Update/Delete/Edit Operations for logged in users
   return (
     <nav>
       <Link to="/">Home</Link>
-      <Link to="/edit">Edit</Link>
-      <Link to="/create">Create</Link>
-      <Link to="/delete">Delete</Link>
+      {user && <Link to="/edit">Edit</Link>}
+      {user && <Link to="/create">Create</Link>}
+      {user && <Link to="/delete">Delete</Link>}
       {user ?
         <button onClick={handleLogout}>Logout</button>
         :
-        <Link to="/login">Login</Link>}
+        <Link to="/login">Login</Link>
+      }
     </nav>
   );
 };
