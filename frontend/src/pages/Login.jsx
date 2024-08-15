@@ -45,7 +45,7 @@ const Login = () => {
           placeholder='123' />
         <button
           type="submit"
-          onClick={handleSubmit(onSubmit)}>Save
+          onClick={handleSubmit(onSubmit)}>Login
         </button>
       </form>
     </div>

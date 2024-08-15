@@ -14,7 +14,7 @@ const Home = () => {
 
   return (
     <div>
-      <h1 className="text-1xl font-bold underline">Home</h1>
+      <h1>Home</h1>
       <ul>
         {dataFromQuery.map(pizza => (
           <li key={pizza._id}>

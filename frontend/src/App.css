@@ -118,14 +118,14 @@ h6 {
 }
 
 /* Links */
-a {
+/* a {
   color: #007bff;
   text-decoration: none;
 }
 
 a:hover {
   text-decoration: underline;
-}
+} */
 
 /* Forms */
 input, textarea {
