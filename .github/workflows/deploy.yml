@@ -1,0 +1,82 @@
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy project to GH pages (Front-end) and Render Cloud (Back-end)
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ['main']
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+  # Front end deployment
+  deployFrontend:
+    name: 'Deploy Front-end GH Pages'
+    environment:
+      name: Deployment
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          # caching npm dependencies in monorepos (BE and FE in same repo, ie: multiple package-lock.json)
+          cache-dependency-path: ./frontend/package-lock.json
+      
+      # Set environment variables
+      - name: Set API Endpoint
+        run: echo "VITE_API_LOCATION=${{ secrets.VITE_API_LOCATION }}" >> $GITHUB_ENV
+
+      - name: Set API Endpoint
+        run: echo "VITE_API_SUFFIX=${{ secrets.VITE_API_SUFFIX }}" >> $GITHUB_ENV
+
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Build
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload dist folder
+          path: './frontend/dist'
+      
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  # Back-end deployment
+  deployBackend:
+    name: 'Deploy Back-end on Render Cloud'
+    environment:
+      name: Deployment
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Deploy to Render"
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.MY_RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.MY_RENDER_API_KEY }}

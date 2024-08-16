@@ -89,7 +89,7 @@ My personal setup is using GitHub pages to deploy the front-end and Render (Free
 
 Environment variables are injected into the application from the cloud rather than .env found locally.
 
-**Pro tip:** use cron jobs to wake the Render VM up every 12m so it doesn't idle.  Spin up time takes 1m.  As of time of writing, it spins down after 15m of no activity with 750h of monthly free uptime.
+**Pro tip:** use cron jobs to wake the Render VM up every 12m so it doesn't idle.  Spin up time takes 1m.  As of time of writing, it spins down after 15m of no activity with 750h of monthly free uptime.  https://docs.render.com/free#free-web-services
 
 ## Render Environment Variables
 
@@ -100,6 +100,8 @@ Environment variables are injected into the application from the cloud rather th
 - ```VITE_API_LOCATION``` (Location of the back-end URL)  
   Ex: ```https://react-express-template.onrender.com```
 - ```VITE_API_SUFFIX``` (API and version number.  Ex: ```/api/v1/```)
+- ```MY_RENDER_SERVICE_ID``` 
+- - ```MY_RENDER_API_KEY``` 
 
 
 
