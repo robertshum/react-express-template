@@ -2,26 +2,22 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { UserContext } from '../context/UserContext';
 import { useContext } from 'react';
 
-const API_LOC = import.meta.env.VITE_API_LOCATION;
 let API_PORT = '';
-
+const ENTITY = 'pizza-model';
+const API_LOC = import.meta.env.VITE_API_LOCATION;
 const ENV_PORT = import.meta.env.VITE_API_PORT;
+const API_SUFFIX = import.meta.env.VITE_API_SUFFIX;
 
 // TODO Testing Remove Token when finished testing
 const TOKEN = 'F5yHCjMWqeXSMZcznVfaDdpi4hX3.U.Ma6UUiEFnInj4t.crBnfYp5iX6usyCA.H';
 
-//TODO move const ENTITY here.
-
 if (ENV_PORT) {
-  API_PORT = ENV_PORT;
+  API_PORT = ':' + ENV_PORT;
 }
 
-const API_SUFFIX = import.meta.env.VITE_API_SUFFIX;
-
 const getPizzas = async () => {
-  const entity = 'pizza-model';
   const response =
-    await fetch(`${API_LOC}:${API_PORT}${API_SUFFIX}${entity}`, {
+    await fetch(`${API_LOC}${API_PORT}${API_SUFFIX}${ENTITY}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${TOKEN}`
@@ -37,10 +33,9 @@ const getPizzas = async () => {
 };
 
 const createOrUpdatePizza = async ({ id, data }) => {
-  const entity = 'pizza-model';
 
   // POST, unless id is present
-  let api = `${API_LOC}:${API_PORT}${API_SUFFIX}${entity}`;
+  let api = `${API_LOC}${API_PORT}${API_SUFFIX}${ENTITY}`;
   let methodType = 'POST';
 
   //if id is present, PUT/PATCH
@@ -66,8 +61,7 @@ const createOrUpdatePizza = async ({ id, data }) => {
 };
 
 const deletePizza = async ({ id }) => {
-  const entity = 'pizza-model';
-  let api = `${API_LOC}:${API_PORT}${API_SUFFIX}${entity}/${id}`;
+  let api = `${API_LOC}${API_PORT}${API_SUFFIX}${ENTITY}/${id}`;
   const response = await fetch(api, {
     method: 'DELETE',
     headers: {
@@ -88,7 +82,7 @@ const deletePizza = async ({ id }) => {
 };
 
 const loginUser = async ({ email, password }) => {
-  const api = `${API_LOC}:${API_PORT}${API_SUFFIX}auth/login`;
+  const api = `${API_LOC}${API_PORT}${API_SUFFIX}auth/login`;
   const response = await fetch(api, {
     method: 'POST',
     headers: {
@@ -206,7 +200,6 @@ export const loginUserAPI = () => {
     mutationFn: loginUser,
     onSuccess: (data) => {
       //handle successful login
-      console.log('Login successful: ', data);
       login(data);
     },
     onError: (error) => {
@@ -230,7 +223,6 @@ export const logoutUserAPI = () => {
     mutationFn: logoutUser,
     onSuccess: (data) => {
       //handle successful logout
-      console.log('Logout successful: ', data);
 
       //NOTE:
       //the backend does not currently store the user logging in.  It is stored in the client/context level (for demo purposes).  If the back-end needs to logout, we would have additional logic here.  Otherwise, the context will clear the user.
