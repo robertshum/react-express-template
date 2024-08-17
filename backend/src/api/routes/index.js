@@ -4,6 +4,7 @@ import { authenticateWithToken } from '../middlewares/auth.js';
 import { handle404, handleError } from '../middlewares/errors.js';
 import authRouter from './auth.js';
 import pizzaModelRouter from './pizzamodel.js';
+import healthRouter from './health.js';
 import urls from '../urls.js';
 import spec from '../openapi.js';
 
@@ -29,6 +30,9 @@ router.use(urls.apiPrefix + urls.auth.path, authRouter);
 
 // CRUD API
 router.use(urls.apiPrefix + urls.pizzaModel.path, pizzaModelRouter);
+
+// Health Check
+router.use(urls.apiPrefix, healthRouter);
 
 // Redirect browsers from index to API docs
 router.get('/', (req, res, next) => {
