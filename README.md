@@ -100,7 +100,7 @@ Environment variables are injected into the application from the cloud rather th
 - ```VITE_API_LOCATION``` (Location of the back-end URL)  
   Ex: ```https://react-express-template.onrender.com```
 - ```VITE_API_SUFFIX``` (API and version number.  Ex: ```/api/v1/```)
-- ```MY_RENDER_SERVICE_ID``` 
+- ```MY_RENDER_SERVICE_ID``` (From the Render App dashboard, the service ID can be found in the URL, starting with ```srv-```.)
 - - ```MY_RENDER_API_KEY``` 
 
 
