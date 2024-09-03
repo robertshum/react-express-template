@@ -9,7 +9,7 @@ const Edit = () => {
   if (!user) return <div><h1>Please log in!</h1></div>;
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
-  
+
   const {
     saveData,
     saveLoading,
@@ -63,6 +63,7 @@ const Edit = () => {
           type='checkbox'
         />
         <button
+          className="btn"
           type="submit"
           onClick={handleSubmit(onSubmit)}>Save
         </button>

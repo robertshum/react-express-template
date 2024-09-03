@@ -54,6 +54,7 @@ const Create = () => {
           type='checkbox'
         />
         <button
+          className="btn"
           type="submit"
           onClick={handleSubmit(onSubmit)}>Save
         </button>

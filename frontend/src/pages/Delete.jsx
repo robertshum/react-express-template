@@ -36,6 +36,7 @@ const Delete = () => {
           type='number'
           placeholder='1' />
         <button
+          className="btn"
           type="submit"
           onClick={handleSubmit(onSubmit)}>Save
         </button>

@@ -44,6 +44,7 @@ const Login = () => {
           type='password'
           placeholder='123' />
         <button
+          className="btn"
           type="submit"
           onClick={handleSubmit(onSubmit)}>Login
         </button>
