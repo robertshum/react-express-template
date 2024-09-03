@@ -20,22 +20,13 @@ class Pizza {
 
   static async deleteOne(query) {
     const data = await readFile();
-
-    const oldCount = data.pizzas.length;
-
+    
     // filter based on query
     // attempts to match kv pair from query
     data.pizzas = data.pizzas.filter(pizza => Object.keys(query).every(key => pizza[key] !== query[key]));
 
-    const newCount = data.pizzas.length;
-    
-    // only decrement if there are any entries
-    if (data.lastPizzaId > 0) {
-      data.lastPizzaId = data.lastPizzaId - 1;
-    }
-
     await writeFile(data);
-    return oldCount !== newCount;
+    return data.pizzas;
   }
 
   static async findOneAndUpdate(idNum, pizza) {
