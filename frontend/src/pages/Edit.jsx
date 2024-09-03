@@ -1,10 +1,15 @@
+import { useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { usePizzaMutationAPI } from '../hooks/useDataAPI';
+import { useContext } from 'react';
+import { UserContext } from '../context/UserContext';
 
 const Edit = () => {
-
+  const { user } = useContext(UserContext);
+  if (!user) return <div><h1>Please log in!</h1></div>;
   const { register, handleSubmit, formState: { errors } } = useForm();
-
+  const navigate = useNavigate();
+  
   const {
     saveData,
     saveLoading,
@@ -23,7 +28,8 @@ const Edit = () => {
       quantity: data.quantity,
       available: data.availability
     };
-    saveData({ id: data.id, data: pizzaData });
+    saveData({ id: data.id, data: pizzaData, token: user.token });
+    navigate('/');
   };
 
   if (saveError) return <div><h1>Error Saving Data</h1></div>;

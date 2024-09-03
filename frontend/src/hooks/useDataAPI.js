@@ -8,19 +8,16 @@ const API_LOC = import.meta.env.VITE_API_LOCATION;
 const ENV_PORT = import.meta.env.VITE_API_PORT;
 const API_SUFFIX = import.meta.env.VITE_API_SUFFIX;
 
-// TODO Testing Remove Token when finished testing
-const TOKEN = 'F5yHCjMWqeXSMZcznVfaDdpi4hX3.U.Ma6UUiEFnInj4t.crBnfYp5iX6usyCA.H';
-
 if (ENV_PORT) {
   API_PORT = ':' + ENV_PORT;
 }
 
-const getPizzas = async () => {
+const getPizzas = async (token) => {
   const response =
     await fetch(`${API_LOC}${API_PORT}${API_SUFFIX}${ENTITY}`, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${TOKEN}`
+        Authorization: `Bearer ${token}`
       }
     });
 
@@ -32,7 +29,7 @@ const getPizzas = async () => {
   return jsonResults;
 };
 
-const createOrUpdatePizza = async ({ id, data }) => {
+const createOrUpdatePizza = async ({ id, data, token }) => {
 
   // POST, unless id is present
   let api = `${API_LOC}${API_PORT}${API_SUFFIX}${ENTITY}`;
@@ -48,7 +45,7 @@ const createOrUpdatePizza = async ({ id, data }) => {
     method: methodType,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${TOKEN}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
   });
@@ -60,13 +57,13 @@ const createOrUpdatePizza = async ({ id, data }) => {
   return await response.json();
 };
 
-const deletePizza = async ({ id }) => {
+const deletePizza = async ({ id, token }) => {
   let api = `${API_LOC}${API_PORT}${API_SUFFIX}${ENTITY}/${id}`;
   const response = await fetch(api, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${TOKEN}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 
@@ -107,7 +104,7 @@ const logoutUser = async ({ user }) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${TOKEN}`,
+      Authorization: `Bearer ${user.token}`,
     },
     body: JSON.stringify({ user }),
   });
@@ -120,13 +117,16 @@ const logoutUser = async ({ user }) => {
   return { success: true, message: 'user logged out successfully' };
 };
 
-export const usePizzasAPI = () => {
+export const usePizzasAPI = (token) => {
   const {
     data: dataFromQuery,
     error: getError,
     isLoading: getLoading,
     refetch: dataRefetch
-  } = useQuery({ queryKey: ['getPizzas'], queryFn: getPizzas });
+  } = useQuery({
+    queryKey: ['getPizzas'],
+    queryFn: () => getPizzas(token),
+  });
 
   return {
     dataFromQuery,

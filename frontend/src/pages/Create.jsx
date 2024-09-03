@@ -1,8 +1,11 @@
 import { useForm } from "react-hook-form";
 import { usePizzaMutationAPI } from '../hooks/useDataAPI';
+import { useContext } from 'react';
+import { UserContext } from '../context/UserContext';
 
 const Create = () => {
-
+  const { user } = useContext(UserContext);
+  if (!user) return <div><h1>Please log in!</h1></div>;
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const {
@@ -23,7 +26,7 @@ const Create = () => {
       quantity: data.quantity,
       available: data.availability
     };
-    saveData({ data: pizzaData });
+    saveData({ data: pizzaData, token: user.token });
   };
 
   if (saveError) return <div><h1>Error Saving Data</h1></div>;

@@ -1,9 +1,12 @@
 import { useForm } from "react-hook-form";
 import { useDeletePizzaAPI } from '../hooks/useDataAPI';
+import { useContext } from 'react';
+import { UserContext } from '../context/UserContext';
 
 const Delete = () => {
-
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const { user } = useContext(UserContext);
+  if (!user) return <div><h1>Please log in!</h1></div>;
 
   const {
     deleteData,
@@ -15,7 +18,7 @@ const Delete = () => {
   const onSubmit = (data) => {
 
     //RHF deals with preventDefault behaviour automatically.
-    deleteData({ id: data.id });
+    deleteData({ id: data.id, token: user.token });
   };
 
   //captured error message from useDataAPI

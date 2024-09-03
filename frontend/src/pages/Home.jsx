@@ -3,17 +3,16 @@ import { useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 
 const Home = () => {
-
   const { user } = useContext(UserContext);
-
+  if (!user) return <div><h1>Please log in!</h1></div>;
+  
   const {
     dataFromQuery,
     getError,
     getLoading,
-  } = usePizzasAPI();
+  } = usePizzasAPI(user.token);
 
-  if (!user) return <div><h1>Please log in!</h1></div>;
-  if (getError) return <div><h1>Error Loading Data</h1></div>;
+  if (getError) return <div><h1>Error Loading Data on homepage</h1></div>;
   if (getLoading) return <div><h1>Loading Data...</h1></div>;
 
   return (
