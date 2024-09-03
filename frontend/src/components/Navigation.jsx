@@ -14,15 +14,15 @@ const Navigation = function() {
   // Home available to everyone
   // Update/Delete/Edit Operations for logged in users
   return (
-    <nav class="navbar bg-base-100">
-      <Link to="/" class="btn btn-ghost text-xl">Home</Link>
-      {user && <Link to="/edit" class="btn btn-ghost text-xl">Edit</Link>}
-      {user && <Link to="/create" class="btn btn-ghost text-xl">Create</Link>}
-      {user && <Link to="/delete" class="btn btn-ghost text-xl">Delete</Link>}
+    <nav className="navbar bg-base-100">
+      <Link to="/" className="btn btn-ghost text-xl">Home</Link>
+      {user && <Link to="/edit" className="btn btn-ghost text-xl">Edit</Link>}
+      {user && <Link to="/create" className="btn btn-ghost text-xl">Create</Link>}
+      {user && <Link to="/delete" className="btn btn-ghost text-xl">Delete</Link>}
       {user ?
-        <button onClick={handleLogout} class="btn btn-ghost text-xl">Logout</button>
+        <button onClick={handleLogout} className="btn btn-ghost text-xl">Logout</button>
         :
-        <Link to="/login" class="btn btn-ghost text-xl">Login</Link>
+        <Link to="/login" className="btn btn-ghost text-xl">Login</Link>
       }
     </nav>
   );
